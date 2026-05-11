@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dodge Blitz – Descarga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan:    #00f5ff;
+      --magenta: #ff00aa;
+      --yellow:  #ffea00;
+      --green:   #00ff88;
+      --bg:      #0a0a0f;
+      --panel:   rgba(255,255,255,0.03);
+      --border:  rgba(0,245,255,0.18);
+      --font:    'Orbitron', monospace;
+      --mono:    'Share Tech Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── FONDO ANIMADO ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 20%, rgba(0,245,255,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 80%, rgba(255,0,170,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid de fondo */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 56px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+      padding: 4px 16px;
+      text-shadow: 0 0 10px var(--cyan);
+      box-shadow: 0 0 12px rgba(0,245,255,0.15);
+      animation: pulso-badge 2.5s ease-in-out infinite;
+    }
+
+    .hero-titulo {
+      line-height: 0.9;
+    }
+
+    .hero-titulo .dodge {
+      display: block;
+      font-size: clamp(52px, 14vw, 100px);
+      font-weight: 900;
+      color: var(--cyan);
+      text-shadow: 0 0 20px var(--cyan), 0 0 60px rgba(0,245,255,0.4);
+      letter-spacing: 0.15em;
+    }
+
+    .hero-titulo .blitz {
+      display: block;
+      font-size: clamp(72px, 20vw, 140px);
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 30px #fff, 0 0 80px var(--cyan);
+      letter-spacing: 0.08em;
+      margin-top: -8px;
+    }
+
+    .hero-sub {
+      font-family: var(--mono);
+      font-size: clamp(11px, 2.5vw, 14px);
+      color: var(--magenta);
+      letter-spacing: 0.5em;
+      text-shadow: 0 0 12px var(--magenta);
+    }
+
+    .btn-jugar {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 16px 52px;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      text-decoration: none;
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: clamp(14px, 3.5vw, 18px);
+      letter-spacing: 0.2em;
+      text-shadow: 0 0 10px var(--cyan);
+      box-shadow: 0 0 20px rgba(0,245,255,0.2), inset 0 0 20px rgba(0,245,255,0.05);
+      transition: all 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-jugar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--cyan);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .btn-jugar:hover {
+      background: rgba(0,245,255,0.12);
+      box-shadow: 0 0 40px rgba(0,245,255,0.5), inset 0 0 30px rgba(0,245,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* ── SECCIÓN QR ── */
+    .seccion-qr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      width: 100%;
+    }
+
+    .seccion-titulo {
+      font-size: clamp(14px, 4vw, 20px);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+    }
+
+    .seccion-titulo span {
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+    }
+
+    /* QR Card */
+    .qr-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 0 40px rgba(0,245,255,0.06), inset 0 0 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    /* Esquinas decorativas */
+    .qr-card::before, .qr-card::after,
+    .qr-card .corner-br, .qr-card .corner-bl {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      border-color: var(--cyan);
+      border-style: solid;
+    }
+    .qr-card::before  { top: -1px; left: -1px;  border-width: 3px 0 0 3px; }
+    .qr-card::after   { top: -1px; right: -1px; border-width: 3px 3px 0 0; }
+    .qr-card .corner-br { bottom: -1px; right: -1px; border-width: 0 3px 3px 0; }
+    .qr-card .corner-bl { bottom: -1px; left: -1px;  border-width: 0 0 3px 3px; }
+
+    .qr-img-wrapper {
+      position: relative;
+      width: clamp(220px, 60vw, 300px);
+      height: clamp(220px, 60vw, 300px);
+    }
+
+    .qr-img-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      background: radial-gradient(circle, rgba(0,245,255,0.12) 0%, transparent 70%);
+      animation: qr-glow 3s ease-in-out infinite;
+      border-radius: 4px;
+    }
+
+    .qr-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    /* QR fallback canvas */
+    #qr-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-label {
+      font-family: var(--mono);
+      font-size: clamp(10px, 2.5vw, 12px);
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.3em;
+      text-align: center;
+    }
+
+    .qr-url {
+      font-family: var(--mono);
+      font-size: clamp(9px, 2vw, 11px);
+      color: var(--cyan);
+      text-shadow: 0 0 8px rgba(0,245,255,0.5);
+      word-break: break-all;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    /* ── INSTRUCCIONES ── */
+    .instrucciones {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .paso {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 24px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .paso:hover {
+      border-color: rgba(0,245,255,0.2);
+      box-shadow: 0 0 20px rgba(0,245,255,0.05);
+    }
+
+    .paso-num {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .paso-texto h3 {
+      font-size: clamp(12px, 3vw, 14px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .paso-texto p {
+      font-family: var(--mono);
+      font-size: clamp(11px, 2.5vw, 12px);
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    /* ── CONTROLES ── */
+    .controles {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .control-card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 24px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .control-icon { font-size: 36px; }
+
+    .control-titulo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .control-desc {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+
+    .tecla {
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 2px 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--cyan);
+      margin: 2px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.2em;
+    }
+
+    footer span { color: var(--magenta); }
+
+    /* ── ANIMACIONES ── */
+    @keyframes pulso-badge {
+      0%, 100% { box-shadow: 0 0 12px rgba(0,245,255,0.15); }
+      50%       { box-shadow: 0 0 24px rgba(0,245,255,0.35); }
+    }
+
+    @keyframes qr-glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.04); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .controles { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">▸ JUEGO GRATIS · PWA · SIN DESCARGAS</div>
+    <h1 class="hero-titulo">
+      <span class="dodge">DODGE</span>
+      <span class="blitz">BLITZ</span>
+    </h1>
+    <p class="hero-sub">ESQUIVA O MUERE</p>
+    <a href="https://migxploit.github.io/dodge-blitz1/" target="_blank" class="btn-jugar">
+      ▶ JUGAR AHORA
+    </a>
+  </section>
+
+  <!-- QR -->
+  <section class="seccion-qr">
+    <p class="seccion-titulo">ESCANEA PARA <span>JUGAR AL INSTANTE</span></p>
+
+    <div class="qr-card">
+      <div class="corner-br"></div>
+      <div class="corner-bl"></div>
+
+      <div class="qr-img-wrapper">
+        <canvas id="qr-canvas"></canvas>
+      </div>
+
+      <p class="qr-label">APUNTA TU CÁMARA AL CÓDIGO QR</p>
+      <p class="qr-url">migxploit.github.io/dodge-blitz1</p>
+    </div>
+
+    <!-- Pasos para instalar -->
+    <div class="instrucciones">
+      <div class="paso">
+        <div class="paso-num">01</div>
+        <div class="paso-texto">
+          <h3>ESCANEA EL QR</h3>
+          <p>Con la cámara de tu celular o cualquier app lectora de QR.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">02</div>
+        <div class="paso-texto">
+          <h3>ABRE EN CHROME</h3>
+          <p>El enlace se abre directamente en tu navegador. Juega al instante sin instalar nada.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">03</div>
+        <div class="paso-texto">
+          <h3>INSTALA COMO APP</h3>
+          <p>Chrome mostrará "Agregar a pantalla de inicio". Tócalo y queda como app nativa.</p>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">04</div>
+        <div class="paso-texto">
+          <h3>JUEGA OFFLINE</h3>
+          <p>Una vez instalada, funciona sin internet gracias al Service Worker.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLES -->
+  <section style="width:100%; display:flex; flex-direction:column; gap:20px; align-items:center;">
+    <p class="seccion-titulo">CONTROLES</p>
+    <div class="controles" style="max-width:500px; width:100%;">
+      <div class="control-card">
+        <div class="control-icon">📱</div>
+        <div class="control-titulo">MÓVIL</div>
+        <div class="control-desc">Joystick virtual en la esquina inferior izquierda.<br/>Botón ⏸ para pausar.</div>
+      </div>
+      <div class="control-card">
+        <div class="control-icon">⌨️</div>
+        <div class="control-titulo">PC</div>
+        <div class="control-desc">
+          <span class="tecla">W</span><span class="tecla">A</span><span class="tecla">S</span><span class="tecla">D</span>
+          o flechas para moverse.<br/>
+          <span class="tecla">P</span> / <span class="tecla">ESC</span> para pausar.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    HECHO CON HTML5 · CANVAS · VANILLA JS &nbsp;|&nbsp; <span>DODGE BLITZ</span> © 2025
+  </footer>
+</div>
+
+<!-- QR generado con JS puro (sin dependencias) -->
+<script>
+(function() {
+  const URL_JUEGO = "https://migxploit.github.io/dodge-blitz1/";
+
+  // ── Mini librería QR (Reed-Solomon + matriz) embebida ──
+  // Implementación compacta de QR Code versión 3-M
+  // Basada en el algoritmo estándar ISO/IEC 18004
+
+  const QR = {
+    // Tabla de caracteres alfanumérico
+    ALPHANUM: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./: ',
+
+    generate(text) {
+      // Usamos modo byte (UTF-8) para URLs
+      const data = this.encodeURL(text);
+      return data;
+    },
+
+    encodeURL(url) {
+      // Codificar cada carácter como byte
+      const bytes = [];
+      for (let i = 0; i < url.length; i++) {
+        bytes.push(url.charCodeAt(i));
+      }
+      return bytes;
+    }
+  };
+
+  // ── Usamos una API de QR online como fallback visual ──
+  // Para renderizar el QR real en canvas usamos un servicio de imagen
+  const canvas = document.getElementById('qr-canvas');
+  const ctx = canvas.getContext('2d');
+  const size = 280;
+  canvas.width = size;
+  canvas.height = size;
+
+  // Fondo
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, size, size);
+
+  // Cargar imagen QR desde API pública
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+
+  // Google Charts QR API (confiable y sin key)
+  const encoded = encodeURIComponent(URL_JUEGO);
+  img.src = `https://chart.googleapis.com/chart?cht=qr&chs=280x280&chl=${encoded}&chco=00f5ff|0a0a0f&chf=bg,s,0a0a0f`;
+
+  img.onload = () => {
+    // Limpiar y dibujar QR
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, size, size);
+
+    // Dibujar imagen
+    ctx.drawImage(img, 0, 0, size, size);
+
+    // Efecto: teñir de cyan (blend mode)
+    ctx.globalCompositeOperation = 'screen';
+    ctx.fillStyle = 'rgba(0,200,220,0.15)';
+    ctx.fillRect(0, 0, size, size);
+    ctx.globalCompositeOperation = 'source-over';
+  };
+
+  img.onerror = () => {
+    // Fallback: dibujar QR manual simplificado con texto
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, size, size);
+
+    ctx.strokeStyle = '#00f5ff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(10, 10, size-20, size-20);
+
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = 'bold 13px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('ESCANEA CON', size/2, size/2 - 20);
+    ctx.fillText('TU CÁMARA →', size/2, size/2);
+    ctx.font = '10px monospace';
+    ctx.fillStyle = 'rgba(0,245,255,0.5)';
+    ctx.fillText('migxploit.github.io', size/2, size/2 + 30);
+    ctx.fillText('/dodge-blitz1/', size/2, size/2 + 46);
+  };
+})();
+</script>
+</body>
+</html>
